@@ -13,26 +13,7 @@ request.onerror = function (e) {
 };
 
 request.onsuccess = function (e) {
-    db = request.result;
-    tx = db.transaction(["pending"], "readwrite");
-    store = tx.objectStore("pending");
-
-    db.onerror = function (e) {
-        console.log("error");
-    };
-    if (method === "put") {
-        store.put(object);
-    } else if (method === "get") {
-        const all = store.getAll();
-        all.onsuccess = function () {
-            resolve(all.result);
-        };
-    } else if (method === "delete") {
-        store.delete(object._id);
-    }
-    tx.oncomplete = function () {
-        db.close();
-    };
+    db = e.target.result;
 
     if(navigator.onLine){
         checkDb();
